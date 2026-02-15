@@ -44,6 +44,7 @@ jobs:
         run: |
           if [ -f data/history.json ]; then cp data/history.json history.json; else echo '{"products":[]}' > history.json; fi
           if [ -f data/state.json ]; then cp data/state.json state.json; else echo '{"currentDay":0,"lastRunDate":null}' > state.json; fi
+          if [ -f data/trends.json ]; then cp data/trends.json trends.json; else echo '{"tracked":{}}' > trends.json; fi
 
       - name: 🔄 Force run override
         if: ${{ github.event.inputs.force_run == 'true' }}
@@ -58,6 +59,7 @@ jobs:
           mkdir -p data
           cp history.json data/history.json
           cp state.json data/state.json
+          cp trends.json data/trends.json
           git config user.name "Bot"
           git config user.email "bot@github-actions"
           git add data/
