@@ -22,10 +22,6 @@ env:
   MAX_DAYS: 15
   PRODUCTS_PER_DAY: 10
 
-defaults:
-  run:
-    working-directory: viral-product-hunter
-
 jobs:
   hunt-products:
     runs-on: ubuntu-latest
@@ -42,11 +38,22 @@ jobs:
         with:
           node-version: '18'
 
+      - name: 📂 Find project root
+        id: find
+        run: |
+          echo "📁 Repo contents:"
+          ls -la
+          echo ""
+          PROJECT_DIR=$(dirname $(find . -name "package.json" -not -path "*/node_modules/*" | head -1))
+          echo "📍 Project found at: $PROJECT_DIR"
+          echo "dir=$PROJECT_DIR" >> $GITHUB_OUTPUT
+
       - name: 📦 Install dependencies
-        run: npm install --no-package-lock
+        run: cd ${{ steps.find.outputs.dir }} && npm install --no-package-lock
 
       - name: 📂 Restore data files
         run: |
+          cd ${{ steps.find.outputs.dir }}
           if [ -f data/history.json ]; then
             cp data/history.json history.json
             echo "✅ Restored history.json"
@@ -66,6 +73,7 @@ jobs:
       - name: 🔄 Force run override
         if: ${{ github.event.inputs.force_run == 'true' }}
         run: |
+          cd ${{ steps.find.outputs.dir }}
           node -e "
             const fs = require('fs');
             const state = JSON.parse(fs.readFileSync('state.json','utf-8'));
@@ -75,22 +83,24 @@ jobs:
           "
 
       - name: 🚀 Run Viral Product Hunter
-        run: node src/run-once.js
+        run: cd ${{ steps.find.outputs.dir }} && node src/run-once.js
 
       - name: 💾 Save data to repo
         run: |
+          cd ${{ steps.find.outputs.dir }}
           mkdir -p data
           cp history.json data/history.json
           cp state.json data/state.json
 
+          cd $GITHUB_WORKSPACE
           git config user.name "Viral Product Hunter Bot"
           git config user.email "bot@github-actions"
-          git add data/history.json data/state.json
+          git add -A
 
           if git diff --cached --quiet; then
             echo "📭 No changes to commit"
           else
-            CURRENT_DAY=$(node -e "const s=JSON.parse(require('fs').readFileSync('state.json','utf-8'));console.log(s.currentDay)")
+            CURRENT_DAY=$(cd ${{ steps.find.outputs.dir }} && node -e "const s=JSON.parse(require('fs').readFileSync('state.json','utf-8'));console.log(s.currentDay)")
             git commit -m "🤖 Day ${CURRENT_DAY} — $(date -u +%Y-%m-%d) product hunt complete"
             git push
             echo "✅ Data pushed"
@@ -98,6 +108,7 @@ jobs:
 
       - name: 🏁 Check completion
         run: |
+          cd ${{ steps.find.outputs.dir }}
           node -e "
             const s = JSON.parse(require('fs').readFileSync('state.json','utf-8'));
             console.log('📊 Day ' + s.currentDay + '/15');
