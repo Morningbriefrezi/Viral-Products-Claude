@@ -3,7 +3,6 @@ name: 🌍 World Viral Product Hunter
 on:
   schedule:
     - cron: '0 5 * * *'
-
   workflow_dispatch:
     inputs:
       force_run:
@@ -28,7 +27,7 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - name: 📥 Checkout repository
+      - name: 📥 Checkout
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -38,80 +37,31 @@ jobs:
         with:
           node-version: '18'
 
-      - name: 📂 Find project root
-        id: find
+      - name: 📦 Install
+        run: npm install --no-package-lock
+
+      - name: 📂 Restore data
         run: |
-          echo "📁 Repo contents:"
-          ls -la
-          echo ""
-          PROJECT_DIR=$(dirname $(find . -name "package.json" -not -path "*/node_modules/*" | head -1))
-          echo "📍 Project found at: $PROJECT_DIR"
-          echo "dir=$PROJECT_DIR" >> $GITHUB_OUTPUT
-
-      - name: 📦 Install dependencies
-        run: cd ${{ steps.find.outputs.dir }} && npm install --no-package-lock
-
-      - name: 📂 Restore data files
-        run: |
-          cd ${{ steps.find.outputs.dir }}
-          if [ -f data/history.json ]; then
-            cp data/history.json history.json
-            echo "✅ Restored history.json"
-          else
-            echo '{"products":[]}' > history.json
-            echo "🆕 Created fresh history.json"
-          fi
-
-          if [ -f data/state.json ]; then
-            cp data/state.json state.json
-            echo "✅ Restored state.json"
-          else
-            echo '{"currentDay":0,"lastRunDate":null}' > state.json
-            echo "🆕 Created fresh state.json"
-          fi
+          if [ -f data/history.json ]; then cp data/history.json history.json; else echo '{"products":[]}' > history.json; fi
+          if [ -f data/state.json ]; then cp data/state.json state.json; else echo '{"currentDay":0,"lastRunDate":null}' > state.json; fi
 
       - name: 🔄 Force run override
         if: ${{ github.event.inputs.force_run == 'true' }}
         run: |
-          cd ${{ steps.find.outputs.dir }}
-          node -e "
-            const fs = require('fs');
-            const state = JSON.parse(fs.readFileSync('state.json','utf-8'));
-            state.lastRunDate = null;
-            fs.writeFileSync('state.json', JSON.stringify(state, null, 2));
-            console.log('✅ Force run: reset lastRunDate');
-          "
+          node -e "const fs=require('fs');const s=JSON.parse(fs.readFileSync('state.json','utf-8'));s.lastRunDate=null;fs.writeFileSync('state.json',JSON.stringify(s,null,2));"
 
-      - name: 🚀 Run Viral Product Hunter
-        run: cd ${{ steps.find.outputs.dir }} && node src/run-once.js
+      - name: 🚀 Run
+        run: node run-once.js
 
-      - name: 💾 Save data to repo
+      - name: 💾 Save data
         run: |
-          cd ${{ steps.find.outputs.dir }}
           mkdir -p data
           cp history.json data/history.json
           cp state.json data/state.json
-
-          cd $GITHUB_WORKSPACE
-          git config user.name "Viral Product Hunter Bot"
+          git config user.name "Bot"
           git config user.email "bot@github-actions"
-          git add -A
+          git add data/
+          if git diff --cached --quiet; then echo "No changes"; else git commit -m "🤖 Product hunt $(date -u +%Y-%m-%d)" && git push; fi
 
-          if git diff --cached --quiet; then
-            echo "📭 No changes to commit"
-          else
-            CURRENT_DAY=$(cd ${{ steps.find.outputs.dir }} && node -e "const s=JSON.parse(require('fs').readFileSync('state.json','utf-8'));console.log(s.currentDay)")
-            git commit -m "🤖 Day ${CURRENT_DAY} — $(date -u +%Y-%m-%d) product hunt complete"
-            git push
-            echo "✅ Data pushed"
-          fi
-
-      - name: 🏁 Check completion
-        run: |
-          cd ${{ steps.find.outputs.dir }}
-          node -e "
-            const s = JSON.parse(require('fs').readFileSync('state.json','utf-8'));
-            console.log('📊 Day ' + s.currentDay + '/15');
-            if (s.currentDay >= 15) console.log('🏁 All 15 days completed!');
-            else console.log('⏰ Next run: tomorrow at 05:00 UTC');
-          "
+      - name: 🏁 Status
+        run: node -e "const s=JSON.parse(require('fs').readFileSync('state.json','utf-8'));console.log('Day '+s.currentDay+'/15');"
