@@ -1,30 +1,30 @@
 export const CATEGORIES = [
+  'trending gadgets 2024',
+  'viral tiktok products',
   'smart home gadgets',
-  'kitchen tools and gadgets',
-  'car accessories',
-  'phone accessories',
-  'fitness and gym equipment',
-  'LED lights and lighting',
-  'cleaning tools',
-  'beauty and skincare tools',
-  'pet accessories',
-  'travel gear',
-  'desk and office gadgets',
-  'outdoor and camping gear',
-  'baby and kids products',
-  'gaming accessories',
-  'portable electronics',
-  'mini projectors and displays',
-  'wireless audio devices',
-  'smart watches and wearables',
-  'home organization',
-  'DIY tools and accessories'
+  'kitchen gadgets bestseller',
+  'car accessories trending',
+  'phone accessories popular',
+  'fitness gadgets hot',
+  'led lights trending',
+  'cleaning gadgets viral',
+  'beauty tools bestseller',
+  'pet gadgets popular',
+  'travel accessories trending',
+  'desk gadgets cool',
+  'outdoor gadgets popular',
+  'baby products bestseller',
+  'gaming accessories trending',
+  'portable electronics hot',
+  'mini projector popular',
+  'wireless earbuds bestseller',
+  'smart watch gadgets'
 ];
 
 export const FILTERS = {
   MIN_ORDERS: 500,
   MIN_RATING: 4.3,
-  MAX_PRICE: 40
+  MAX_PRICE: 100
 };
 
 export const SCORING_WEIGHTS = {
