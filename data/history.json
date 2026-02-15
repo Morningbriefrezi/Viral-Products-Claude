@@ -1,1 +1,134 @@
-{"products":[]}
+{
+  "products": [
+    {
+      "name": "Smart WiFi LED Bulb",
+      "link": "https://www.aliexpress.com/wholesale?SearchText=WiFi%20LED%20bulb",
+      "price": 11.99,
+      "orders": 9000,
+      "rating": 4.7,
+      "category": "smart home gadgets",
+      "competitionLevel": "medium",
+      "nicheScore": 7,
+      "viralScore": 0.794,
+      "day": 1,
+      "date": "2026-02-15"
+    },
+    {
+      "name": "Silicone Baking Mat",
+      "link": "https://www.aliexpress.com/wholesale?SearchText=baking%20mat",
+      "price": 10.99,
+      "orders": 8000,
+      "rating": 4.9,
+      "category": "kitchen gadgets",
+      "competitionLevel": "medium",
+      "nicheScore": 8,
+      "viralScore": 0.788,
+      "day": 1,
+      "date": "2026-02-15"
+    },
+    {
+      "name": "Handheld Milk Frother",
+      "link": "https://www.aliexpress.com/wholesale?SearchText=milk%20frother",
+      "price": 12.99,
+      "orders": 7200,
+      "rating": 4.8,
+      "category": "kitchen gadgets",
+      "competitionLevel": "medium",
+      "nicheScore": 7,
+      "viralScore": 0.736,
+      "day": 1,
+      "date": "2026-02-15"
+    },
+    {
+      "name": "Smart LED Strip Lights",
+      "link": "https://www.aliexpress.com/wholesale?SearchText=LED%20strip%20lights",
+      "price": 29.99,
+      "orders": 6200,
+      "rating": 4.6,
+      "category": "smart home gadgets",
+      "competitionLevel": "medium",
+      "nicheScore": 7,
+      "viralScore": 0.68,
+      "day": 1,
+      "date": "2026-02-15"
+    },
+    {
+      "name": "Portable Electric Food Steamer",
+      "link": "https://www.aliexpress.com/wholesale?SearchText=electric%20food%20steamer",
+      "price": 29.99,
+      "orders": 6500,
+      "rating": 4.6,
+      "category": "kitchen gadgets",
+      "competitionLevel": "medium",
+      "nicheScore": 6,
+      "viralScore": 0.67,
+      "day": 1,
+      "date": "2026-02-15"
+    },
+    {
+      "name": "Mini Portable Bluetooth Speaker Waterproof",
+      "link": "https://www.aliexpress.com/wholesale?SearchText=portable%20bluetooth%20speaker",
+      "price": 15.99,
+      "orders": 8500,
+      "rating": 4.7,
+      "category": "portable electronics",
+      "competitionLevel": "high",
+      "nicheScore": 5,
+      "viralScore": 0.646,
+      "day": 1,
+      "date": "2026-02-15"
+    },
+    {
+      "name": "Rechargeable Hand Warmer",
+      "link": "https://www.aliexpress.com/wholesale?SearchText=hand%20warmer",
+      "price": 22.99,
+      "orders": 5300,
+      "rating": 4.5,
+      "category": "trending gadgets",
+      "competitionLevel": "medium",
+      "nicheScore": 6,
+      "viralScore": 0.634,
+      "day": 1,
+      "date": "2026-02-15"
+    },
+    {
+      "name": "Smart Plant Watering Device",
+      "link": "https://www.aliexpress.com/wholesale?SearchText=plant%20watering%20system",
+      "price": 19.99,
+      "orders": 5000,
+      "rating": 4.5,
+      "category": "smart home gadgets",
+      "competitionLevel": "medium",
+      "nicheScore": 6,
+      "viralScore": 0.627,
+      "day": 1,
+      "date": "2026-02-15"
+    },
+    {
+      "name": "Magnetic Phone Holder for Car",
+      "link": "https://www.aliexpress.com/wholesale?SearchText=car%20phone%20holder",
+      "price": 15.99,
+      "orders": 7200,
+      "rating": 4.4,
+      "category": "car accessories",
+      "competitionLevel": "high",
+      "nicheScore": 4,
+      "viralScore": 0.574,
+      "day": 1,
+      "date": "2026-02-15"
+    },
+    {
+      "name": "Electric Wine Opener",
+      "link": "https://www.aliexpress.com/wholesale?SearchText=electric%20wine%20opener",
+      "price": 25.99,
+      "orders": 5400,
+      "rating": 4.5,
+      "category": "kitchen gadgets",
+      "competitionLevel": "high",
+      "nicheScore": 5,
+      "viralScore": 0.527,
+      "day": 1,
+      "date": "2026-02-15"
+    }
+  ]
+}

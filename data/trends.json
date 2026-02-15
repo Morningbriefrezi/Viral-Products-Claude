@@ -1,0 +1,154 @@
+{
+  "tracked": {
+    "smart wifi led bulb": {
+      "name": "Smart WiFi LED Bulb",
+      "category": "smart home gadgets",
+      "firstSeen": 1,
+      "appearances": [
+        {
+          "day": 1,
+          "orders": 9000,
+          "price": 11.99,
+          "rating": 4.7,
+          "viralScore": 0.794
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "silicone baking mat": {
+      "name": "Silicone Baking Mat",
+      "category": "kitchen gadgets",
+      "firstSeen": 1,
+      "appearances": [
+        {
+          "day": 1,
+          "orders": 8000,
+          "price": 10.99,
+          "rating": 4.9,
+          "viralScore": 0.788
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "handheld milk frother": {
+      "name": "Handheld Milk Frother",
+      "category": "kitchen gadgets",
+      "firstSeen": 1,
+      "appearances": [
+        {
+          "day": 1,
+          "orders": 7200,
+          "price": 12.99,
+          "rating": 4.8,
+          "viralScore": 0.736
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "smart led strip lights": {
+      "name": "Smart LED Strip Lights",
+      "category": "smart home gadgets",
+      "firstSeen": 1,
+      "appearances": [
+        {
+          "day": 1,
+          "orders": 6200,
+          "price": 29.99,
+          "rating": 4.6,
+          "viralScore": 0.68
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "portable electric food steamer": {
+      "name": "Portable Electric Food Steamer",
+      "category": "kitchen gadgets",
+      "firstSeen": 1,
+      "appearances": [
+        {
+          "day": 1,
+          "orders": 6500,
+          "price": 29.99,
+          "rating": 4.6,
+          "viralScore": 0.67
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "mini portable bluetooth speaker waterproof": {
+      "name": "Mini Portable Bluetooth Speaker Waterproof",
+      "category": "portable electronics",
+      "firstSeen": 1,
+      "appearances": [
+        {
+          "day": 1,
+          "orders": 8500,
+          "price": 15.99,
+          "rating": 4.7,
+          "viralScore": 0.646
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "rechargeable hand warmer": {
+      "name": "Rechargeable Hand Warmer",
+      "category": "trending gadgets",
+      "firstSeen": 1,
+      "appearances": [
+        {
+          "day": 1,
+          "orders": 5300,
+          "price": 22.99,
+          "rating": 4.5,
+          "viralScore": 0.634
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "smart plant watering device": {
+      "name": "Smart Plant Watering Device",
+      "category": "smart home gadgets",
+      "firstSeen": 1,
+      "appearances": [
+        {
+          "day": 1,
+          "orders": 5000,
+          "price": 19.99,
+          "rating": 4.5,
+          "viralScore": 0.627
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "magnetic phone holder for car": {
+      "name": "Magnetic Phone Holder for Car",
+      "category": "car accessories",
+      "firstSeen": 1,
+      "appearances": [
+        {
+          "day": 1,
+          "orders": 7200,
+          "price": 15.99,
+          "rating": 4.4,
+          "viralScore": 0.574
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "electric wine opener": {
+      "name": "Electric Wine Opener",
+      "category": "kitchen gadgets",
+      "firstSeen": 1,
+      "appearances": [
+        {
+          "day": 1,
+          "orders": 5400,
+          "price": 25.99,
+          "rating": 4.5,
+          "viralScore": 0.527
+        }
+      ],
+      "trend": "🆕 new"
+    }
+  }
+}
