@@ -28,10 +28,13 @@ export const FILTERS = {
 };
 
 export const SCORING_WEIGHTS = {
-  ORDERS: 0.5,
-  RATING: 0.3,
-  PRICE_ADVANTAGE: 0.2
+  ORDERS: 0.30,
+  RATING: 0.15,
+  PRICE_ADVANTAGE: 0.10,
+  COMPETITION: 0.25,
+  NICHE: 0.20
 };
 
 export const PRODUCTS_PER_DAY = parseInt(process.env.PRODUCTS_PER_DAY) || 10;
 export const MAX_DAYS = parseInt(process.env.MAX_DAYS) || 15;
+export const WEEKLY_REPORT_EVERY = 7;
