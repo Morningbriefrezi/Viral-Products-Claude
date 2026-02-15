@@ -4,9 +4,7 @@ import { CATEGORIES, FILTERS, SCORING_WEIGHTS, PRODUCTS_PER_DAY } from './config
 let _openai;
 function getClient() {
   if (!_openai) {
-    if (!process.env.OPENAI_API_KEY) {
-      throw new Error('OPENAI_API_KEY is not set.');
-    }
+    if (!process.env.OPENAI_API_KEY) throw new Error('OPENAI_API_KEY is not set.');
     _openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   }
   return _openai;
@@ -44,14 +42,15 @@ REQUIREMENTS:
 - Each product must have estimated orders above ${FILTERS.MIN_ORDERS}
 - Each product must have a rating of ${FILTERS.MIN_RATING} or higher (out of 5.0)
 - Each product price must be under $${FILTERS.MAX_PRICE}
-- Focus on products that are trending on TikTok, Instagram, or going viral in 2024-2025
+- Focus on products trending on TikTok, Instagram, or going viral in 2024-2025
+- Prioritize UNIQUE products that are NOT easily found on Amazon
 - Products should have mass appeal and impulse buy potential
 
 CRITICAL FORMAT RULES:
-- "price" must be a decimal number like 25.99 (NOT 2599, NOT "25.99")
-- "rating" must be a decimal out of 5.0 like 4.7 (NOT 47, NOT "4.7")
-- "orders" must be an integer like 5200 (NOT "5.2K", NOT "5,200")
-- "searchQuery" must be a short 2-4 word search term for AliExpress (NOT the full product name)
+- "price" must be a decimal number like 25.99 (NOT 2599)
+- "rating" must be a decimal out of 5.0 like 4.7 (NOT 47)
+- "orders" must be an integer like 5200 (NOT "5.2K")
+- "searchQuery" must be a short 2-4 word search term for AliExpress
 ${exclusion}
 
 Respond ONLY with a valid JSON array. No markdown, no backticks, no explanation.
@@ -68,14 +67,14 @@ Respond ONLY with a valid JSON array. No markdown, no backticks, no explanation.
   }
 ]`;
 
-  console.log('🤖 Querying OpenAI...');
+  console.log('🤖 Querying OpenAI for products...');
 
   const response = await getClient().chat.completions.create({
     model: 'gpt-4o-mini',
     messages: [
       {
         role: 'system',
-        content: 'You are a product research expert. Return ONLY a valid JSON array. No markdown, no code blocks. Prices must be decimal numbers like 25.99, ratings must be decimals like 4.7, orders must be integers like 5200.'
+        content: 'You are a product research expert. Return ONLY a valid JSON array. Prices must be decimals like 25.99, ratings decimals like 4.7, orders integers like 5200.'
       },
       { role: 'user', content: prompt }
     ],
@@ -90,43 +89,33 @@ Respond ONLY with a valid JSON array. No markdown, no backticks, no explanation.
   try {
     products = JSON.parse(cleaned);
   } catch (err) {
-    console.error('❌ Failed to parse OpenAI response:', err.message);
-    console.error('Raw:', raw.slice(0, 500));
+    console.error('❌ Parse failed:', err.message);
     return [];
   }
 
-  if (!Array.isArray(products)) {
-    console.error('❌ Response is not an array');
-    return [];
-  }
+  if (!Array.isArray(products)) return [];
 
   const normalized = products.map(p => {
     let price = parseFloat(p.price) || 0;
     let rating = parseFloat(p.rating) || 0;
     let orders = parseInt(p.orders) || 0;
 
-    // Fix if OpenAI returned price without decimal (2599 instead of 25.99)
     if (price > 500) price = price / 100;
-
-    // Fix if rating was returned as integer (47 instead of 4.7)
     if (rating > 5) rating = rating / 10;
 
-    // Build clean AliExpress search link
     const query = (p.searchQuery || p.name || '').trim();
     const link = `https://www.aliexpress.com/wholesale?SearchText=${encodeURIComponent(query)}`;
 
     return {
       name: (p.name || '').trim(),
-      price,
-      orders,
-      rating,
+      price, orders, rating,
       category: (p.category || '').trim(),
       whyViral: (p.whyViral || '').trim(),
       link
     };
   });
 
-  console.log(`📦 OpenAI returned ${normalized.length} products`);
+  console.log(`📦 Received ${normalized.length} products`);
   return normalized;
 }
 
@@ -139,7 +128,7 @@ export function filterAndScore(products, seenNames) {
     p.name.length > 5
   ));
 
-  console.log(`✅ After filtering: ${filtered.length} products meet criteria`);
+  console.log(`✅ Filtered: ${filtered.length} meet criteria`);
 
   filtered = filtered.filter(p => {
     const nameLower = p.name.toLowerCase().trim();
@@ -151,8 +140,7 @@ export function filterAndScore(products, seenNames) {
     });
   });
 
-  console.log(`🆕 After dedup: ${filtered.length} new products`);
-
+  console.log(`🆕 After dedup: ${filtered.length} new`);
   if (filtered.length === 0) return [];
 
   const maxOrders = Math.max(...filtered.map(p => p.orders), 1);
@@ -162,14 +150,32 @@ export function filterAndScore(products, seenNames) {
     const ratingScore = p.rating / 5;
     const priceAdvantage = 1 - (p.price / FILTERS.MAX_PRICE);
 
+    const baseScore = (orderScore * 0.45) + (ratingScore * 0.30) + (priceAdvantage * 0.25);
+
+    return { ...p, viralScore: Math.round(baseScore * 1000) / 1000 };
+  }).sort((a, b) => b.viralScore - a.viralScore);
+
+  return scored.slice(0, PRODUCTS_PER_DAY + 3);
+}
+
+export function recalculateScores(products) {
+  const maxOrders = Math.max(...products.map(p => p.orders), 1);
+
+  return products.map(p => {
+    const orderScore = p.orders / maxOrders;
+    const ratingScore = p.rating / 5;
+    const priceAdvantage = 1 - (p.price / FILTERS.MAX_PRICE);
+    const competitionScore = p.competitionLevel === 'low' ? 1.0 : p.competitionLevel === 'medium' ? 0.5 : 0.15;
+    const nicheNorm = (p.nicheScore || 5) / 10;
+
     const viralScore = (
       (orderScore * SCORING_WEIGHTS.ORDERS) +
       (ratingScore * SCORING_WEIGHTS.RATING) +
-      (priceAdvantage * SCORING_WEIGHTS.PRICE_ADVANTAGE)
+      (priceAdvantage * SCORING_WEIGHTS.PRICE_ADVANTAGE) +
+      (competitionScore * SCORING_WEIGHTS.COMPETITION) +
+      (nicheNorm * SCORING_WEIGHTS.NICHE)
     );
 
     return { ...p, viralScore: Math.round(viralScore * 1000) / 1000 };
   }).sort((a, b) => b.viralScore - a.viralScore);
-
-  return scored.slice(0, PRODUCTS_PER_DAY);
 }
