@@ -22,6 +22,10 @@ env:
   MAX_DAYS: 15
   PRODUCTS_PER_DAY: 10
 
+defaults:
+  run:
+    working-directory: viral-product-hunter
+
 jobs:
   hunt-products:
     runs-on: ubuntu-latest
