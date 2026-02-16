@@ -149,6 +149,156 @@
         }
       ],
       "trend": "🆕 new"
+    },
+    "hydrating mist facial spray": {
+      "name": "Hydrating Mist Facial Spray",
+      "category": "beauty tools",
+      "firstSeen": 2,
+      "appearances": [
+        {
+          "day": 2,
+          "orders": 9000,
+          "price": 18.99,
+          "rating": 4.8,
+          "viralScore": 0.81
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "smart water bottle with reminder": {
+      "name": "Smart Water Bottle with Reminder",
+      "category": "fitness gadgets",
+      "firstSeen": 2,
+      "appearances": [
+        {
+          "day": 2,
+          "orders": 7500,
+          "price": 24.99,
+          "rating": 4.6,
+          "viralScore": 0.728
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "led makeup mirror with lights": {
+      "name": "LED Makeup Mirror with Lights",
+      "category": "beauty tools",
+      "firstSeen": 2,
+      "appearances": [
+        {
+          "day": 2,
+          "orders": 6800,
+          "price": 36.99,
+          "rating": 4.7,
+          "viralScore": 0.696
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "smart jump rope with display": {
+      "name": "Smart Jump Rope with Display",
+      "category": "fitness gadgets",
+      "firstSeen": 2,
+      "appearances": [
+        {
+          "day": 2,
+          "orders": 7000,
+          "price": 39.99,
+          "rating": 4.5,
+          "viralScore": 0.673
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "wireless charging phone case": {
+      "name": "Wireless Charging Phone Case",
+      "category": "phone accessories",
+      "firstSeen": 2,
+      "appearances": [
+        {
+          "day": 2,
+          "orders": 6200,
+          "price": 29.99,
+          "rating": 4.6,
+          "viralScore": 0.66
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "rechargeable electric cleaning brush": {
+      "name": "Rechargeable Electric Cleaning Brush",
+      "category": "cleaning gadgets",
+      "firstSeen": 2,
+      "appearances": [
+        {
+          "day": 2,
+          "orders": 6200,
+          "price": 34.99,
+          "rating": 4.5,
+          "viralScore": 0.652
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "smart fitness tracker watch": {
+      "name": "Smart Fitness Tracker Watch",
+      "category": "fitness gadgets",
+      "firstSeen": 2,
+      "appearances": [
+        {
+          "day": 2,
+          "orders": 8000,
+          "price": 45.99,
+          "rating": 4.7,
+          "viralScore": 0.599
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "led strip light music sync": {
+      "name": "LED Strip Light Music Sync",
+      "category": "led lights",
+      "firstSeen": 2,
+      "appearances": [
+        {
+          "day": 2,
+          "orders": 5800,
+          "price": 32.99,
+          "rating": 4.8,
+          "viralScore": 0.542
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "led neon sign light": {
+      "name": "LED Neon Sign Light",
+      "category": "led lights",
+      "firstSeen": 2,
+      "appearances": [
+        {
+          "day": 2,
+          "orders": 6000,
+          "price": 29.99,
+          "rating": 4.9,
+          "viralScore": 0.535
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "magnetic car phone mount": {
+      "name": "Magnetic Car Phone Mount",
+      "category": "phone accessories",
+      "firstSeen": 2,
+      "appearances": [
+        {
+          "day": 2,
+          "orders": 5300,
+          "price": 15.99,
+          "rating": 4.4,
+          "viralScore": 0.51
+        }
+      ],
+      "trend": "🆕 new"
     }
   }
 }
