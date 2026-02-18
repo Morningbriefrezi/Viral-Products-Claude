@@ -449,6 +449,156 @@
         }
       ],
       "trend": "🆕 new"
+    },
+    "true wireless earbuds with touch control": {
+      "name": "True Wireless Earbuds with Touch Control",
+      "category": "wireless earbuds",
+      "firstSeen": 4,
+      "appearances": [
+        {
+          "day": 4,
+          "orders": 15000,
+          "price": 29.99,
+          "rating": 4.8,
+          "viralScore": 0.779
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "ergonomic gaming mouse": {
+      "name": "Ergonomic Gaming Mouse",
+      "category": "gaming accessories",
+      "firstSeen": 4,
+      "appearances": [
+        {
+          "day": 4,
+          "orders": 9200,
+          "price": 24.99,
+          "rating": 4.7,
+          "viralScore": 0.665
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "customizable gaming headset": {
+      "name": "Customizable Gaming Headset",
+      "category": "gaming accessories",
+      "firstSeen": 4,
+      "appearances": [
+        {
+          "day": 4,
+          "orders": 8000,
+          "price": 39.99,
+          "rating": 4.7,
+          "viralScore": 0.606
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "rgb gaming mouse pad": {
+      "name": "RGB Gaming Mouse Pad",
+      "category": "gaming accessories",
+      "firstSeen": 4,
+      "appearances": [
+        {
+          "day": 4,
+          "orders": 6200,
+          "price": 19.99,
+          "rating": 4.8,
+          "viralScore": 0.593
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "noise cancelling wireless earbuds": {
+      "name": "Noise Cancelling Wireless Earbuds",
+      "category": "wireless earbuds",
+      "firstSeen": 4,
+      "appearances": [
+        {
+          "day": 4,
+          "orders": 12000,
+          "price": 35.99,
+          "rating": 4.9,
+          "viralScore": 0.589
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "fitness smartwatch with heart rate monitor": {
+      "name": "Fitness Smartwatch with Heart Rate Monitor",
+      "category": "smart watch gadgets",
+      "firstSeen": 4,
+      "appearances": [
+        {
+          "day": 4,
+          "orders": 6700,
+          "price": 49.99,
+          "rating": 4.4,
+          "viralScore": 0.581
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "portable ssd 1tb": {
+      "name": "Portable SSD 1TB",
+      "category": "portable electronics",
+      "firstSeen": 4,
+      "appearances": [
+        {
+          "day": 4,
+          "orders": 7000,
+          "price": 59.99,
+          "rating": 4.5,
+          "viralScore": 0.56
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "smartwatch with blood pressure monitor": {
+      "name": "Smartwatch with Blood Pressure Monitor",
+      "category": "smart watch gadgets",
+      "firstSeen": 4,
+      "appearances": [
+        {
+          "day": 4,
+          "orders": 5400,
+          "price": 55.99,
+          "rating": 4.3,
+          "viralScore": 0.506
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "portable smartphone printer": {
+      "name": "Portable Smartphone Printer",
+      "category": "portable electronics",
+      "firstSeen": 4,
+      "appearances": [
+        {
+          "day": 4,
+          "orders": 5100,
+          "price": 69.99,
+          "rating": 4.4,
+          "viralScore": 0.489
+        }
+      ],
+      "trend": "🆕 new"
+    },
+    "wireless charging earbuds": {
+      "name": "Wireless Charging Earbuds",
+      "category": "wireless earbuds",
+      "firstSeen": 4,
+      "appearances": [
+        {
+          "day": 4,
+          "orders": 6200,
+          "price": 39.99,
+          "rating": 4.5,
+          "viralScore": 0.437
+        }
+      ],
+      "trend": "🆕 new"
     }
   }
 }
