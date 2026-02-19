@@ -67,14 +67,21 @@ def detect_rsi_divergence(data):
 
 def trend_strength(data):
     score = 0
+
+    if len(data) < 200:
+        return score
+
     latest = data.iloc[-1]
 
-    if latest['MA50'] > latest['MA200']:
+    if float(latest['MA50']) > float(latest['MA200']):
         score += 30
-    if 50 < latest['RSI'] < 70:
+
+    if 50 < float(latest['RSI']) < 70:
         score += 20
+
     if volume_spike(data):
         score += 20
+
     if breakout_signal(data) == "Bullish Breakout":
         score += 30
 
