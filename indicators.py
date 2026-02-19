@@ -28,17 +28,25 @@ def volume_spike(data):
     avg_volume = data['Volume'].rolling(20).mean()
     return data['Volume'].iloc[-1] > 2 * avg_volume.iloc[-1]
 
-def breakout_signal(data):
-    recent_high = data['High'].rolling(20).max()
-    recent_low = data['Low'].rolling(20).min()
+def breakout_signal(data, lookback=20):
+    if len(data) < lookback + 2:
+        return "No Breakout"
 
-    close = data['Close'].iloc[-1]
+    recent_high = data['High'].rolling(lookback).max()
+    recent_low = data['Low'].rolling(lookback).min()
 
-    if close > recent_high.iloc[-2]:
+    latest_close = float(data['Close'].iloc[-1])
+    previous_high = float(recent_high.iloc[-2])
+    previous_low = float(recent_low.iloc[-2])
+
+    if latest_close > previous_high:
         return "Bullish Breakout"
-    if close < recent_low.iloc[-2]:
+
+    if latest_close < previous_low:
         return "Bearish Breakdown"
+
     return "No Breakout"
+
 
 def detect_rsi_divergence(data):
     price = data['Close']
