@@ -1,6 +1,4 @@
 import requests
-import schedule
-import time
 
 from config import TELEGRAM_TOKEN, CHAT_ID
 from data import get_data
@@ -30,48 +28,38 @@ STOCKS = {
     "Meta": "META"
 }
 
+
 def send_message(text):
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
     requests.post(url, data={"chat_id": CHAT_ID, "text": text})
 
-def generate_report():
-    message = "📊 DAILY MARKET REPORT\n\n"
 
-    for name, ticker in CRYPTO.items():
+def build_section(assets, crypto=False):
+    """Build a message string for a group of assets."""
+    message = ""
+    for name, ticker in assets.items():
         try:
             data = get_data(ticker)
-
             if data is None or data.empty:
                 message += f"{name}: No data available\n\n"
                 continue
-
-            analysis = analyze_asset(data, crypto=True)
-            message += format_asset(name, analysis, crypto=True)
+            analysis = analyze_asset(data, crypto=crypto)
+            message += format_asset(name, analysis, crypto=crypto)
             message += "\n"
-
         except Exception as e:
-            message += f"{name}: Error loading data\n\n"
-
-    for name, ticker in STOCKS.items():
-        try:
-            data = get_data(ticker)
-
-            if data is None or data.empty:
-                message += f"{name}: No data available\n\n"
-                continue
-
-            analysis = analyze_asset(data)
-            message += format_asset(name, analysis)
-            message += "\n"
-
-        except Exception:
-            message += f"{name}: Error loading data\n\n"
-
-    send_message(message)
+            message += f"{name}: Error — {e}\n\n"
+    return message
 
 
-schedule.every().day.at("09:00").do(generate_report)
+def generate_report():
+    # Send crypto and stocks as two separate messages to stay under Telegram's 4096 char limit
+    crypto_msg = "📊 CRYPTO REPORT\n\n" + build_section(CRYPTO, crypto=True)
+    stocks_msg = "📈 STOCKS REPORT\n\n" + build_section(STOCKS, crypto=False)
 
-while True:
-    schedule.run_pending()
-    time.sleep(60)
+    send_message(crypto_msg)
+    send_message(stocks_msg)
+    print("Reports sent.")
+
+
+if __name__ == "__main__":
+    generate_report()
