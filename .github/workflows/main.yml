@@ -1,69 +1,34 @@
-name: 🌍 World Viral Product Hunter
+name: Daily Market Bot
 
 on:
   schedule:
-    - cron: '0 5 * * *'
+    - cron: '0 5 * * *'    # 09:00 Georgia time (UTC+4)
+    - cron: '0 15 * * *'   # 19:00 Georgia time (UTC+4)
   workflow_dispatch:
-    inputs:
-      force_run:
-        description: 'Force run even if already ran today'
-        required: false
-        default: 'false'
-        type: boolean
-
-permissions:
-  contents: write
-
-env:
-  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-  MAX_DAYS: 15
-  PRODUCTS_PER_DAY: 10
 
 jobs:
-  hunt-products:
+  run-bot:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
 
     steps:
-      - name: 📥 Checkout
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          python-version: '3.11'
 
-      - name: 🟢 Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: 📦 Install
-        run: npm install --no-package-lock
-
-      - name: 📂 Restore data
+      - name: Install dependencies
         run: |
-          if [ -f data/history.json ]; then cp data/history.json history.json; else echo '{"products":[]}' > history.json; fi
-          if [ -f data/state.json ]; then cp data/state.json state.json; else echo '{"currentDay":0,"lastRunDate":null}' > state.json; fi
-          if [ -f data/trends.json ]; then cp data/trends.json trends.json; else echo '{"tracked":{}}' > trends.json; fi
+          pip install --upgrade pip
+          pip install -r requirements.txt
 
-      - name: 🔄 Force run override
-        if: ${{ github.event.inputs.force_run == 'true' }}
+      - name: Run bot
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+          CAPITAL: ${{ secrets.CAPITAL }}
+          RISK_PERCENT: ${{ secrets.RISK_PERCENT }}
         run: |
-          node -e "const fs=require('fs');const s=JSON.parse(fs.readFileSync('state.json','utf-8'));s.lastRunDate=null;fs.writeFileSync('state.json',JSON.stringify(s,null,2));"
-
-      - name: 🚀 Run
-        run: node run-once.js
-
-      - name: 💾 Save data
-        run: |
-          mkdir -p data
-          cp history.json data/history.json
-          cp state.json data/state.json
-          cp trends.json data/trends.json
-          git config user.name "Bot"
-          git config user.email "bot@github-actions"
-          git add data/
-          if git diff --cached --quiet; then echo "No changes"; else git commit -m "🤖 Product hunt $(date -u +%Y-%m-%d)" && git push; fi
-
-      - name: 🏁 Status
-        run: node -e "const s=JSON.parse(require('fs').readFileSync('state.json','utf-8'));console.log('Day '+s.currentDay+'/15');"
+          python main.py
