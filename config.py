@@ -1,5 +1,7 @@
-TELEGRAM_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
-CHAT_ID = "YOUR_CHAT_ID"
+import os
 
-CAPITAL = 10000          # Your trading capital
-RISK_PERCENT = 0.01      # 1% risk per trade
+TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "")
+CHAT_ID = os.environ.get("CHAT_ID", "")
+
+CAPITAL = float(os.environ.get("CAPITAL", 10000))
+RISK_PERCENT = float(os.environ.get("RISK_PERCENT", 0.01))
