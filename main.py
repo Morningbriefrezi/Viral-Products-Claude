@@ -35,19 +35,40 @@ def send_message(text):
     requests.post(url, data={"chat_id": CHAT_ID, "text": text})
 
 def generate_report():
-    message = "📊 DAILY MARKET REPORT\n"
+    message = "📊 DAILY MARKET REPORT\n\n"
 
     for name, ticker in CRYPTO.items():
-        data = get_data(ticker)
-        analysis = analyze_asset(data, crypto=True)
-        message += format_asset(name, analysis, crypto=True)
+        try:
+            data = get_data(ticker)
+
+            if data is None or data.empty:
+                message += f"{name}: No data available\n\n"
+                continue
+
+            analysis = analyze_asset(data, crypto=True)
+            message += format_asset(name, analysis, crypto=True)
+            message += "\n"
+
+        except Exception as e:
+            message += f"{name}: Error loading data\n\n"
 
     for name, ticker in STOCKS.items():
-        data = get_data(ticker)
-        analysis = analyze_asset(data)
-        message += format_asset(name, analysis)
+        try:
+            data = get_data(ticker)
+
+            if data is None or data.empty:
+                message += f"{name}: No data available\n\n"
+                continue
+
+            analysis = analyze_asset(data)
+            message += format_asset(name, analysis)
+            message += "\n"
+
+        except Exception:
+            message += f"{name}: Error loading data\n\n"
 
     send_message(message)
+
 
 schedule.every().day.at("09:00").do(generate_report)
 
