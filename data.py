@@ -1,9 +1,19 @@
 import yfinance as yf
 
 def get_data(ticker):
-    return yf.download(
+    df = yf.download(
         ticker,
-        period="1y",       # 1 year = ~252 trading days, enough for MA200
+        period="1y",
         interval="1d",
-        progress=False
+        progress=False,
+        auto_adjust=True
     )
+    if df is None or df.empty:
+        return df
+
+    # Newer yfinance returns MultiIndex columns like ('Close', 'BTC-USD').
+    # Flatten to simple column names ('Close', 'High', 'Low', etc.)
+    if isinstance(df.columns, __import__('pandas').MultiIndex):
+        df.columns = df.columns.get_level_values(0)
+
+    return df
