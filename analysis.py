@@ -13,8 +13,12 @@ def analyze_asset(data, crypto=False):
     divergence = detect_rsi_divergence(data)
     score = trend_strength(data)
     week_chg = weekly_change(data)
+    month_chg = monthly_change(data)
     vol_level, vol_pct = volatility_level(data)
     above_ma50, above_ma200 = ma_position(data)
+    w_open, w_high, w_low = weekly_ohlc(data)
+    vol_trend = volume_trend(data)
+    support, resistance = key_levels(data)
 
     result = {
         "price": round(float(latest['Close']), 4),
@@ -24,10 +28,17 @@ def analyze_asset(data, crypto=False):
         "breakout": breakout,
         "divergence": divergence,
         "week_change": week_chg,
+        "month_change": month_chg,
         "volatility": vol_level,
         "volatility_pct": vol_pct,
         "above_ma50": above_ma50,
         "above_ma200": above_ma200,
+        "week_open": w_open,
+        "week_high": w_high,
+        "week_low": w_low,
+        "volume_trend": vol_trend,
+        "support": support,
+        "resistance": resistance,
     }
 
     if crypto:

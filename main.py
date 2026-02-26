@@ -59,12 +59,14 @@ def generate_report():
 
     header = f"📅 WEEKLY RECAP  |  {date_range}\n\n"
 
-    # Send crypto and stocks as two separate messages to stay under Telegram's 4096 char limit
-    crypto_msg = header + "🪙 CRYPTO WEEKLY RECAP\n\n" + build_section(CRYPTO, crypto=True)
-    stocks_msg = header + "📈 STOCKS WEEKLY RECAP\n\n" + build_section(STOCKS, crypto=False)
+    # Split crypto into two batches of 5 — 10 assets would exceed Telegram's 4096 char limit
+    crypto_items = list(CRYPTO.items())
+    crypto_batch_1 = dict(crypto_items[:5])
+    crypto_batch_2 = dict(crypto_items[5:])
 
-    send_message(crypto_msg)
-    send_message(stocks_msg)
+    send_message(header + "🪙 CRYPTO WEEKLY RECAP (1/2)\n\n" + build_section(crypto_batch_1, crypto=True))
+    send_message(header + "🪙 CRYPTO WEEKLY RECAP (2/2)\n\n" + build_section(crypto_batch_2, crypto=True))
+    send_message(header + "📈 STOCKS WEEKLY RECAP\n\n" + build_section(STOCKS, crypto=False))
     print("Weekly reports sent.")
 
 

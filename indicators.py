@@ -105,3 +105,46 @@ def ma_position(data):
     above_ma50 = price > ma50
     above_ma200 = price > ma200
     return above_ma50, above_ma200
+
+def weekly_ohlc(data):
+    """Returns the past 7 days open, high, low."""
+    if len(data) < 7:
+        return None, None, None
+    week = data.iloc[-7:]
+    w_open = round(float(week['Open'].iloc[0]), 4)
+    w_high = round(float(week['High'].max()), 4)
+    w_low = round(float(week['Low'].min()), 4)
+    return w_open, w_high, w_low
+
+def monthly_change(data):
+    """% price change over the last 30 candles."""
+    if len(data) < 31:
+        return 0.0
+    price_now = float(data['Close'].iloc[-1])
+    price_ago = float(data['Close'].iloc[-31])
+    if price_ago == 0:
+        return 0.0
+    return round(((price_now - price_ago) / price_ago) * 100, 2)
+
+def volume_trend(data):
+    """Compare this week's avg volume vs prior week."""
+    if len(data) < 14:
+        return "Unknown"
+    this_week = data['Volume'].iloc[-7:].mean()
+    prev_week = data['Volume'].iloc[-14:-7].mean()
+    if prev_week == 0:
+        return "Unknown"
+    ratio = this_week / prev_week
+    if ratio > 1.2:
+        return "Rising ▲"
+    elif ratio < 0.8:
+        return "Falling ▼"
+    return "Stable →"
+
+def key_levels(data, lookback=20):
+    """Support and resistance from recent highs/lows."""
+    if len(data) < lookback:
+        return None, None
+    support = round(float(data['Low'].rolling(lookback).min().iloc[-1]), 4)
+    resistance = round(float(data['High'].rolling(lookback).max().iloc[-1]), 4)
+    return support, resistance

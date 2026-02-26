@@ -70,6 +70,8 @@ def generate_analysis(data, crypto=False):
     vol = data['volatility']
     vol_pct = data['volatility_pct']
     week_chg = data['week_change']
+    month_chg = data['month_change']
+    vol_trend = data['volume_trend']
 
     # Trend
     if score >= 70:
@@ -80,6 +82,22 @@ def generate_analysis(data, crypto=False):
         lines.append("Weak trend. Mixed signals — caution advised.")
     else:
         lines.append("No clear trend. Market is ranging or bearish.")
+
+    # Weekly vs monthly context
+    if week_chg >= 0 and month_chg >= 0:
+        lines.append(f"Both weekly (+{week_chg}%) and monthly (+{month_chg}%) are green — sustained buying pressure.")
+    elif week_chg >= 0 and month_chg < 0:
+        lines.append(f"Week recovered +{week_chg}% but month is still {month_chg}% — possible short-term bounce in a downtrend.")
+    elif week_chg < 0 and month_chg >= 0:
+        lines.append(f"Week pulled back {week_chg}% within a positive month (+{month_chg}%) — healthy dip or start of reversal.")
+    else:
+        lines.append(f"Both weekly ({week_chg}%) and monthly ({month_chg}%) are red — consistent selling pressure.")
+
+    # Volume context
+    if vol_trend == "Rising ▲":
+        lines.append("Volume rising this week — move is backed by participation.")
+    elif vol_trend == "Falling ▼":
+        lines.append("Volume declining — weak conviction behind the price move.")
 
     # RSI
     if rsi >= 70:
@@ -94,7 +112,7 @@ def generate_analysis(data, crypto=False):
     # MA position
     if above_ma50 is not None and above_ma200 is not None:
         if above_ma50 and above_ma200:
-            lines.append("Price above both MA50 and MA200 — healthy uptrend structure.")
+            lines.append("Above both MA50 and MA200 — healthy uptrend structure.")
         elif above_ma50 and not above_ma200:
             lines.append("Above MA50 but below MA200 — recovery underway, not confirmed.")
         elif not above_ma50 and above_ma200:
@@ -128,19 +146,29 @@ def generate_analysis(data, crypto=False):
 def format_asset(name, data, crypto=False):
     v = verdict(data)
     week_chg = data['week_change']
+    month_chg = data['month_change']
     week_arrow = "▲" if week_chg >= 0 else "▼"
-    week_color = "+" if week_chg >= 0 else ""
+    month_arrow = "▲" if month_chg >= 0 else "▼"
+    week_sign = "+" if week_chg >= 0 else ""
+    month_sign = "+" if month_chg >= 0 else ""
 
     text = "━━━━━━━━━━━━━━━━━━━━\n"
     text += f"{'🪙' if crypto else '📈'} {name}   {v}\n"
-    text += f"💲 Price: {data['price']}\n"
-    text += f"📅 Week Change: {week_arrow} {week_color}{week_chg}%\n"
+    text += f"💲 Close: {data['price']}\n"
+    text += f"📅 7d: {week_arrow} {week_sign}{week_chg}%   |   30d: {month_arrow} {month_sign}{month_chg}%\n"
+
+    if data['week_high'] is not None:
+        text += f"📐 Week H: {data['week_high']}  L: {data['week_low']}  Open: {data['week_open']}\n"
+
+    if data['support'] is not None:
+        text += f"🛡 Support: {data['support']}   🚧 Resist: {data['resistance']}\n"
+
     text += f"📊 Score: {score_bar(data['trend_score'])}\n"
-    text += f"📉 RSI: {data['rsi']}   ⚡ Vol: {data['volatility']} ({data['volatility_pct']}%)\n"
+    text += f"📉 RSI: {data['rsi']}   ⚡ Vol: {data['volatility']} ({data['volatility_pct']}%)   📦 Volume: {data['volume_trend']}\n"
 
     if data['above_ma50'] is not None:
-        ma50_str = "✅ above MA50" if data['above_ma50'] else "❌ below MA50"
-        ma200_str = "✅ above MA200" if data['above_ma200'] else "❌ below MA200"
+        ma50_str = "✅ MA50" if data['above_ma50'] else "❌ MA50"
+        ma200_str = "✅ MA200" if data['above_ma200'] else "❌ MA200"
         text += f"📈 {ma50_str}   {ma200_str}\n"
 
     text += f"🔍 {data['breakout']}   |   {data['divergence']}\n"
