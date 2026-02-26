@@ -133,7 +133,8 @@ def format_asset(name, data, crypto=False):
 
     text = "━━━━━━━━━━━━━━━━━━━━\n"
     text += f"{'🪙' if crypto else '📈'} {name}   {v}\n"
-    text += f"💲 Price: {data['price']}   {week_arrow} {week_color}{week_chg}% (7d)\n"
+    text += f"💲 Price: {data['price']}\n"
+    text += f"📅 Week Change: {week_arrow} {week_color}{week_chg}%\n"
     text += f"📊 Score: {score_bar(data['trend_score'])}\n"
     text += f"📉 RSI: {data['rsi']}   ⚡ Vol: {data['volatility']} ({data['volatility_pct']}%)\n"
 

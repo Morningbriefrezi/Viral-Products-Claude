@@ -1,4 +1,5 @@
 import requests
+from datetime import date, timedelta
 
 from config import TELEGRAM_TOKEN, CHAT_ID
 from data import get_data
@@ -52,13 +53,19 @@ def build_section(assets, crypto=False):
 
 
 def generate_report():
+    today = date.today()
+    week_start = today - timedelta(days=6)
+    date_range = f"{week_start.strftime('%b %d')} – {today.strftime('%b %d, %Y')}"
+
+    header = f"📅 WEEKLY RECAP  |  {date_range}\n\n"
+
     # Send crypto and stocks as two separate messages to stay under Telegram's 4096 char limit
-    crypto_msg = "📊 CRYPTO REPORT\n\n" + build_section(CRYPTO, crypto=True)
-    stocks_msg = "📈 STOCKS REPORT\n\n" + build_section(STOCKS, crypto=False)
+    crypto_msg = header + "🪙 CRYPTO WEEKLY RECAP\n\n" + build_section(CRYPTO, crypto=True)
+    stocks_msg = header + "📈 STOCKS WEEKLY RECAP\n\n" + build_section(STOCKS, crypto=False)
 
     send_message(crypto_msg)
     send_message(stocks_msg)
-    print("Reports sent.")
+    print("Weekly reports sent.")
 
 
 if __name__ == "__main__":
